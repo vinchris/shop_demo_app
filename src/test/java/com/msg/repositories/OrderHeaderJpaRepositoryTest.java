@@ -6,27 +6,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class OrderHeaderJpaRepositoryTest {
+class OrderHeaderJpaRepositoryTest {
 
     @Autowired
-    OrderHeaderJpaRepository orderHeaderRepository;
+    OrderHeaderJpaRepository repository;
 
     @Test
-    void testSaveOrder() {
+    public void testSaveOrder() {
         OrderHeader orderHeader = new OrderHeader();
         orderHeader.setCustomer("New Customer");
-        OrderHeader savedOrder = orderHeaderRepository.save(orderHeader);
+        OrderHeader savedOrder = repository.save(orderHeader);
 
         assertNotNull(savedOrder);
         assertNotNull(savedOrder.getId());
 
-        OrderHeader fetchedOrder = orderHeaderRepository.getById(savedOrder.getId());
+        OrderHeader fetchedOrder = repository.getById(savedOrder.getId());
 
         assertNotNull(fetchedOrder);
         assertNotNull(fetchedOrder.getId());
+
     }
 }
