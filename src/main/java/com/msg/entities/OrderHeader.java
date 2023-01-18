@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Objects;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -46,6 +48,9 @@ public class OrderHeader extends BaseEntity {
     @Embedded
     private Address billToAddress;
 
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,17 +59,21 @@ public class OrderHeader extends BaseEntity {
 
         OrderHeader that = (OrderHeader) o;
 
-        if (!customer.equals(that.customer)) return false;
-        if (!shippingAddress.equals(that.shippingAddress)) return false;
-        return billToAddress.equals(that.billToAddress);
+        if (!Objects.equals(customer, that.customer)) return false;
+        if (!Objects.equals(shippingAddress, that.shippingAddress))
+            return false;
+        if (!Objects.equals(billToAddress, that.billToAddress))
+            return false;
+        return orderStatus == that.orderStatus;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + customer.hashCode();
-        result = 31 * result + shippingAddress.hashCode();
-        result = 31 * result + billToAddress.hashCode();
+        result = 31 * result + (customer != null ? customer.hashCode() : 0);
+        result = 31 * result + (shippingAddress != null ? shippingAddress.hashCode() : 0);
+        result = 31 * result + (billToAddress != null ? billToAddress.hashCode() : 0);
+        result = 31 * result + (orderStatus != null ? orderStatus.hashCode() : 0);
         return result;
     }
 }
