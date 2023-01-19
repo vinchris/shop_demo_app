@@ -3,6 +3,7 @@ package com.msg.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,6 +53,18 @@ public class OrderHeader extends BaseEntity {
 
     @OneToMany(mappedBy = "orderHeader", cascade = CascadeType.PERSIST)
     private List<OrderLine> orderLines;
+
+    /**
+     * helper method to add new orderline entity
+     * @param orderLine
+     */
+    public void addOrderLine(OrderLine orderLine){
+        if(orderLines == null){
+            orderLines = new ArrayList<>();
+        }
+        orderLines.add(orderLine);
+        orderLine.setOrderHeader(this);
+    }
 
     @Override
     public boolean equals(Object o) {

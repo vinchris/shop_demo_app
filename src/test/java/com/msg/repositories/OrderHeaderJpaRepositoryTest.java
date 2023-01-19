@@ -63,9 +63,13 @@ class OrderHeaderJpaRepositoryTest {
         OrderLine orderLine = new OrderLine();
         orderLine.setQuantity_ordered(2);
         orderLine.setProduct(product);
+//
+//        orderHeader.setOrderLines(Arrays.asList(orderLine));
+//        orderLine.setOrderHeader(orderHeader); // inverse relationship (bidirectional)
 
-        orderHeader.setOrderLines(Arrays.asList(orderLine));
-        orderLine.setOrderHeader(orderHeader); // inverse relationship (bidirectional)
+        // we removed the code above because we implemented in OrderHeader entity
+        // an association helper method which performs the code above for us and helps us keep our code cleaner
+        orderHeader.addOrderLine(orderLine);
 
         repository.flush();
 
