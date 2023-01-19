@@ -23,11 +23,15 @@ class OrderHeaderJpaRepositoryTest {
 
         assertNotNull(savedOrder);
         assertNotNull(savedOrder.getId());
+        assertNotNull(savedOrder.getCreatedDate());
+        assertNotNull(savedOrder.getLastModifiedDate());
 
         OrderHeader fetchedOrder = repository.getById(savedOrder.getId());
 
         assertNotNull(fetchedOrder);
         assertNotNull(fetchedOrder.getId());
+        assertNotNull(fetchedOrder.getCreatedDate());
+        assertNotNull(fetchedOrder.getLastModifiedDate());
 
     }
 }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -27,6 +28,9 @@ public abstract class BaseEntity {
     @CreationTimestamp
     private Timestamp createdDate;
 
+    @UpdateTimestamp
+    private Timestamp lastModifiedDate;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -35,13 +39,15 @@ public abstract class BaseEntity {
         BaseEntity that = (BaseEntity) o;
 
         if (!Objects.equals(id, that.id)) return false;
-        return Objects.equals(createdDate, that.createdDate);
+        if (!Objects.equals(createdDate, that.createdDate)) return false;
+        return Objects.equals(lastModifiedDate, that.lastModifiedDate);
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
+        result = 31 * result + (lastModifiedDate != null ? lastModifiedDate.hashCode() : 0);
         return result;
     }
 }
