@@ -38,4 +38,12 @@ class ProductJpaRepositoryTest {
         assertNotNull(fetchedProduct.getCreatedDate());
         assertNotNull(fetchedProduct.getLastModifiedDate());
     }
+
+    @Test
+    public void findByDescriptionTest(){
+        Product product = jpaRepository.findByDescription("Product 1");
+
+        assertNotNull(product);
+        assertNotNull(product.getCategories());
+    }
 }

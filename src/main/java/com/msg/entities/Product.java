@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,6 +18,12 @@ public class Product extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ProductStatus productStatus;
 
+    @ManyToMany
+    @JoinTable(name = "product_category",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private List<Category> categories;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -26,7 +33,8 @@ public class Product extends BaseEntity {
         Product product = (Product) o;
 
         if (!Objects.equals(description, product.description)) return false;
-        return productStatus == product.productStatus;
+        if (productStatus != product.productStatus) return false;
+        return Objects.equals(categories, product.categories);
     }
 
     @Override
