@@ -1,16 +1,15 @@
 package com.msg.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@ToString
 @AttributeOverrides(
         {@AttributeOverride(
                 name = "shippingAddress.address",
@@ -51,6 +50,9 @@ public class OrderHeader extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
+    @OneToMany(mappedBy = "orderHeader", cascade = CascadeType.PERSIST)
+    private List<OrderLine> orderLines;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,7 +66,8 @@ public class OrderHeader extends BaseEntity {
             return false;
         if (!Objects.equals(billToAddress, that.billToAddress))
             return false;
-        return orderStatus == that.orderStatus;
+        if (orderStatus != that.orderStatus) return false;
+        return Objects.equals(orderLines, that.orderLines);
     }
 
     @Override
