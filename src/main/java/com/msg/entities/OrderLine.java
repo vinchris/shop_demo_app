@@ -2,7 +2,9 @@ package com.msg.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Objects;
 
@@ -10,9 +12,9 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public class OrderLine extends BaseEntity{
+public class OrderLine extends BaseEntity {
 
-    private  Integer quantity_ordered;
+    private Integer quantityOrdered;
 
     @ManyToOne
     private OrderHeader orderHeader;
@@ -28,7 +30,7 @@ public class OrderLine extends BaseEntity{
 
         OrderLine orderLine = (OrderLine) o;
 
-        if (!Objects.equals(quantity_ordered, orderLine.quantity_ordered))
+        if (!Objects.equals(quantityOrdered, orderLine.quantityOrdered))
             return false;
         if (!Objects.equals(orderHeader, orderLine.orderHeader))
             return false;
@@ -38,7 +40,7 @@ public class OrderLine extends BaseEntity{
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (quantity_ordered != null ? quantity_ordered.hashCode() : 0);
+        result = 31 * result + (quantityOrdered != null ? quantityOrdered.hashCode() : 0);
         result = 31 * result + (product != null ? product.hashCode() : 0);
         return result;
     }

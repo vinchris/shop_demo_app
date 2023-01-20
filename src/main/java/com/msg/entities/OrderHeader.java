@@ -1,7 +1,9 @@
 package com.msg.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +42,9 @@ import java.util.Objects;
 )
 public class OrderHeader extends BaseEntity {
 
-    private String customer;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     @Embedded
     private Address shippingAddress;
@@ -51,15 +55,19 @@ public class OrderHeader extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    @OneToMany(mappedBy = "orderHeader", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "orderHeader", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<OrderLine> orderLines;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    private OrderApproval orderApproval;
 
     /**
      * helper method to add new orderline entity
+     *
      * @param orderLine
      */
-    public void addOrderLine(OrderLine orderLine){
-        if(orderLines == null){
+    public void addOrderLine(OrderLine orderLine) {
+        if (orderLines == null) {
             orderLines = new ArrayList<>();
         }
         orderLines.add(orderLine);
