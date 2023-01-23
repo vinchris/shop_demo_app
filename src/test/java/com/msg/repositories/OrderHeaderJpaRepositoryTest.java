@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class OrderHeaderJpaRepositoryTest {
 
     @Autowired
-    OrderHeaderJpaRepository repository;
+    OrderHeaderJpaRepository orderHeaderJpaRepository;
 
     @Autowired
     ProductJpaRepository productJpaRepository;
@@ -53,14 +53,14 @@ class OrderHeaderJpaRepositoryTest {
     @Test
     public void testSaveOrder() {
         OrderHeader orderHeader = new OrderHeader();
-        OrderHeader savedOrder = repository.save(orderHeader);
+        OrderHeader savedOrder = orderHeaderJpaRepository.save(orderHeader);
 
         assertNotNull(savedOrder);
         assertNotNull(savedOrder.getId());
         assertNotNull(savedOrder.getCreatedDate());
         assertNotNull(savedOrder.getLastModifiedDate());
 
-        OrderHeader fetchedOrder = repository.getById(savedOrder.getId());
+        OrderHeader fetchedOrder = orderHeaderJpaRepository.getById(savedOrder.getId());
 
         assertNotNull(fetchedOrder);
         assertNotNull(fetchedOrder.getId());
@@ -72,7 +72,7 @@ class OrderHeaderJpaRepositoryTest {
     @Test
     void saveOrderHeaderWithOrderLineTest() {
         OrderHeader orderHeader = new OrderHeader();
-        OrderHeader savedOrder = repository.save(orderHeader);
+        OrderHeader savedOrder = orderHeaderJpaRepository.save(orderHeader);
 
         OrderLine orderLine = new OrderLine();
         orderLine.setQuantityOrdered(2);
@@ -85,7 +85,7 @@ class OrderHeaderJpaRepositoryTest {
         // an association helper method which performs the code above for us and helps us keep our code cleaner
         orderHeader.addOrderLine(orderLine);
 
-        repository.flush();
+        orderHeaderJpaRepository.flush();
 
         assertNotNull(savedOrder);
         assertNotNull(savedOrder.getId());
@@ -93,7 +93,7 @@ class OrderHeaderJpaRepositoryTest {
         assertNotNull(savedOrder.getLastModifiedDate());
         assertEquals(savedOrder.getOrderLines().size(), 1);
 
-        OrderHeader fetchedOrder = repository.getById(savedOrder.getId());
+        OrderHeader fetchedOrder = orderHeaderJpaRepository.getById(savedOrder.getId());
 
         assertNotNull(fetchedOrder);
         assertNotNull(fetchedOrder.getId());
@@ -104,7 +104,7 @@ class OrderHeaderJpaRepositoryTest {
     @Test
     void saveOrderHeaderWithOrderLineAndCustomerTest() {
         OrderHeader orderHeader = new OrderHeader();
-        OrderHeader savedOrder = repository.save(orderHeader);
+        OrderHeader savedOrder = orderHeaderJpaRepository.save(orderHeader);
 
         OrderLine orderLine = new OrderLine();
         orderLine.setQuantityOrdered(2);
@@ -114,7 +114,7 @@ class OrderHeaderJpaRepositoryTest {
 
         orderHeader.setOrderApproval(approval);
 
-        repository.flush();
+        orderHeaderJpaRepository.flush();
 
         assertNotNull(savedOrder);
         assertNotNull(savedOrder.getId());
@@ -123,7 +123,7 @@ class OrderHeaderJpaRepositoryTest {
         assertEquals(savedOrder.getOrderLines().size(), 1);
         assertNotNull(savedOrder.getCustomer());
 
-        OrderHeader fetchedOrder = repository.getById(savedOrder.getId());
+        OrderHeader fetchedOrder = orderHeaderJpaRepository.getById(savedOrder.getId());
 
         assertNotNull(fetchedOrder);
         assertNotNull(fetchedOrder.getId());
@@ -135,7 +135,7 @@ class OrderHeaderJpaRepositoryTest {
     @Test
     void deleteOrderHeader() {
         OrderHeader orderHeader = new OrderHeader();
-        OrderHeader savedOrder = repository.save(orderHeader);
+        OrderHeader savedOrder = orderHeaderJpaRepository.save(orderHeader);
 
         OrderLine orderLine = new OrderLine();
         orderLine.setQuantityOrdered(2);
@@ -147,8 +147,8 @@ class OrderHeaderJpaRepositoryTest {
 
         log.info("Order saved and flushed !!!");
 
-        repository.deleteById(savedOrder.getId());
-        repository.flush();
+        orderHeaderJpaRepository.deleteById(savedOrder.getId());
+        orderHeaderJpaRepository.flush();
 
     }
 
@@ -161,37 +161,34 @@ class OrderHeaderJpaRepositoryTest {
         customer.setCustomerName("New Customer");
         Customer savedCustomer = customerJpaRepository.save(customer);
 
-        orderHeader.setCustomer(savedCustomer);
+//        orderHeader.setCustomer(savedCustomer);
 
         OrderLine orderLine = new OrderLine();
         orderLine.setQuantityOrdered(5);
         orderLine.setProduct(product);
 
         orderHeader.addOrderLine(orderLine);
+        OrderHeader savedOrder = orderHeaderJpaRepository.saveAndFlush(orderHeader);
+
+        log.info("Order saved and flushed");
 
         OrderApproval approval = new OrderApproval();
         approval.setApprovedBy("me");
+        savedOrder.setOrderApproval(approval);
 
-        orderHeader.setOrderApproval(approval);
-
-        OrderHeader savedOrder = repository.save(orderHeader);
-
-
-        repository.flush();
-
-        Long approvalID = orderHeader.getOrderApproval().getId();
+        Long approvalID = savedOrder.getOrderApproval().getId();
 
 
-        repository.deleteById(savedOrder.getId());
-        repository.flush();
+        orderHeaderJpaRepository.deleteById(savedOrder.getId());
+        orderHeaderJpaRepository.flush();
 
 //The order header with the last deleted ID is no longer in the DB.
-        Optional<OrderHeader> fetchedOrder = repository.findById(savedOrder.getId());
+        Optional<OrderHeader> fetchedOrder = orderHeaderJpaRepository.findById(savedOrder.getId());
         assertTrue(fetchedOrder.isEmpty());
 
 //But the Order approval "me" is still there
         if (fetchedOrder.isPresent()) {
-            OrderApproval orderApproval = repository.findById(approvalID).get().getOrderApproval();
+            OrderApproval orderApproval = orderHeaderJpaRepository.findById(approvalID).get().getOrderApproval();
             assertNotNull(orderApproval);
         }
 
