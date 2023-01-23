@@ -167,14 +167,14 @@ class OrderHeaderJpaRepositoryTest {
         orderLine.setQuantityOrdered(5);
         orderLine.setProduct(product);
 
+        OrderApproval approval = new OrderApproval();
+        approval.setApprovedBy("me");
+        orderHeader.setOrderApproval(approval);
+
         orderHeader.addOrderLine(orderLine);
         OrderHeader savedOrder = orderHeaderJpaRepository.saveAndFlush(orderHeader);
 
         log.info("Order saved and flushed");
-
-        OrderApproval approval = new OrderApproval();
-        approval.setApprovedBy("me");
-        savedOrder.setOrderApproval(approval);
 
         Long approvalID = savedOrder.getOrderApproval().getId();
 
