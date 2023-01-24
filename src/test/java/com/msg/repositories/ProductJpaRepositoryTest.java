@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -17,7 +17,7 @@ class ProductJpaRepositoryTest {
     ProductJpaRepository jpaRepository;
 
     @Test
-    void persistAndRetrievalTest(){
+    void persistAndRetrievalTest() {
         Product product = new Product();
         product.setDescription("product 1");
         product.setProductStatus(ProductStatus.IN_STOCK);
@@ -40,8 +40,8 @@ class ProductJpaRepositoryTest {
     }
 
     @Test
-    void findByDescriptionTest(){
-        Product product = jpaRepository.findByDescription("Product 1");
+    void findByDescriptionTest() {
+        Product product = jpaRepository.findByDescription("Product 1").get();
 
         assertNotNull(product);
         assertNotNull(product.getCategories());

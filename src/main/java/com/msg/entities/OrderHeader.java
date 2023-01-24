@@ -58,7 +58,7 @@ public class OrderHeader extends BaseEntity {
     @OneToMany(mappedBy = "orderHeader", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<OrderLine> orderLines;
 
-    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "orderHeader")
     private OrderApproval orderApproval;
 
     /**
@@ -72,6 +72,16 @@ public class OrderHeader extends BaseEntity {
         }
         orderLines.add(orderLine);
         orderLine.setOrderHeader(this);
+    }
+
+    /**
+     * updated setOrderApproval setter for orderApproval to also map this entity to the @oneToOne orderApproval entity
+     *
+     * @param orderApproval
+     */
+    public void setOrderApproval(OrderApproval orderApproval) {
+        this.orderApproval = orderApproval;
+        orderApproval.setOrderHeader(this);
     }
 
     @Override

@@ -51,7 +51,7 @@ class OrderHeaderJpaRepositoryTest {
     }
 
     @Test
-    public void testSaveOrder() {
+    void testSaveOrder() {
         OrderHeader orderHeader = new OrderHeader();
         OrderHeader savedOrder = orderHeaderJpaRepository.save(orderHeader);
 
@@ -60,7 +60,7 @@ class OrderHeaderJpaRepositoryTest {
         assertNotNull(savedOrder.getCreatedDate());
         assertNotNull(savedOrder.getLastModifiedDate());
 
-        OrderHeader fetchedOrder = orderHeaderJpaRepository.getById(savedOrder.getId());
+        OrderHeader fetchedOrder = orderHeaderJpaRepository.getReferenceById(savedOrder.getId());
 
         assertNotNull(fetchedOrder);
         assertNotNull(fetchedOrder.getId());
@@ -91,9 +91,9 @@ class OrderHeaderJpaRepositoryTest {
         assertNotNull(savedOrder.getId());
         assertNotNull(savedOrder.getCreatedDate());
         assertNotNull(savedOrder.getLastModifiedDate());
-        assertEquals(savedOrder.getOrderLines().size(), 1);
+        assertEquals(1, savedOrder.getOrderLines().size());
 
-        OrderHeader fetchedOrder = orderHeaderJpaRepository.getById(savedOrder.getId());
+        OrderHeader fetchedOrder = orderHeaderJpaRepository.getReferenceById(savedOrder.getId());
 
         assertNotNull(fetchedOrder);
         assertNotNull(fetchedOrder.getId());
@@ -120,10 +120,10 @@ class OrderHeaderJpaRepositoryTest {
         assertNotNull(savedOrder.getId());
         assertNotNull(savedOrder.getCreatedDate());
         assertNotNull(savedOrder.getLastModifiedDate());
-        assertEquals(savedOrder.getOrderLines().size(), 1);
+        assertEquals(1, savedOrder.getOrderLines().size());
         assertNotNull(savedOrder.getCustomer());
 
-        OrderHeader fetchedOrder = orderHeaderJpaRepository.getById(savedOrder.getId());
+        OrderHeader fetchedOrder = orderHeaderJpaRepository.getReferenceById(savedOrder.getId());
 
         assertNotNull(fetchedOrder);
         assertNotNull(fetchedOrder.getId());

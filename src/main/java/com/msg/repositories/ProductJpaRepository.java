@@ -1,10 +1,11 @@
 package com.msg.repositories;
 
-import com.msg.entities.OrderHeader;
 import com.msg.entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface ProductJpaRepository extends JpaRepository<Product, Long> {
 
-    Product findByDescription(String description);
+    Optional<Product> findByDescription(String description);
 }
