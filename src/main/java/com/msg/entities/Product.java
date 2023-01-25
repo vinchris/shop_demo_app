@@ -23,6 +23,11 @@ public class Product extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories;
 
+    public void addCategory(Category category) {
+        categories.add(category);
+        category.addProduct(this);
+    }
+
 //    @Override
 //    public boolean equals(Object o) {
 //        if (this == o) return true;

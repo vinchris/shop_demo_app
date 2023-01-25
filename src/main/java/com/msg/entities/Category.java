@@ -26,6 +26,11 @@ public class Category extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products;
 
+    public void addProduct(Product product) {
+        products.add(product);
+        product.addCategory(this);
+    }
+
 //    @Override
 //    public boolean equals(Object o) {
 //        if (this == o) return true;
