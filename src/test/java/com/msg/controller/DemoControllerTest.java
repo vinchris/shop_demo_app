@@ -10,6 +10,8 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(DemoController.class)
 class DemoControllerTest {
@@ -22,7 +24,13 @@ class DemoControllerTest {
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/hello-world")
                 .accept(MediaType.APPLICATION_JSON);
-        MvcResult result = mockMvc.perform(request).andReturn();
+
+        MvcResult result = mockMvc.perform(request) // we perform the request
+                .andExpect(status().is2xxSuccessful()) // we can optionally expect a status if we wish for that
+                .andExpect(status().isOk()) // the same status
+                .andExpect(status().is(200)) // the same status
+                .andExpect(content().string("Hello World"))
+                .andReturn(); // and return an MvcResult with the desired content inside
 
         assertEquals("Hello World", result.getResponse().getContentAsString());
     }
