@@ -1,5 +1,6 @@
 package com.msg.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,9 +26,13 @@ public abstract class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    @JsonIgnore
     @CreationTimestamp
     private Timestamp createdDate;
 
+
+    @JsonIgnore
     @UpdateTimestamp
     private Timestamp lastModifiedDate;
 
