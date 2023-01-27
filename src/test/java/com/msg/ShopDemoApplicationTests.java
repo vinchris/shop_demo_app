@@ -3,7 +3,6 @@ package com.msg;
 import com.msg.entities.ProductStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.yaml.snakeyaml.util.EnumUtils;
 
 import java.util.Arrays;
@@ -16,7 +15,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ActiveProfiles("default")
+
 @SpringBootTest
 class ShopDemoApplicationTests {
 

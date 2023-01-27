@@ -1,5 +1,6 @@
 package com.msg.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -21,6 +22,7 @@ public class Category extends BaseEntity {
     private String description;
 
     @ManyToMany
+    @JsonManagedReference
     @JoinTable(name = "product_category",
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
